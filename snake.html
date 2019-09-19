@@ -13,6 +13,7 @@
 	var canvas;
 	var ctx;
 	var state;
+	var real_state;
 	function initCanvas()
 	{
 		canvas=$("#myCanvas")[0];
@@ -20,6 +21,7 @@
 		ctx.fillstyle="black";
 		ctx.rect(0,0,300,300);
 		ctx.fill();
+
 	};
 	var hGameLoop;
 	var x, y, length
@@ -39,17 +41,22 @@
 			ctx.fillStyle="black";
 			ctx.rect(0,0,300,300);
 			ctx.fill();
+			ctx.font = "10px";
+			ctx.fillStyle = "white";
+			ctx.fillText(length+1,250,20)
 
 			ctx.fillStyle="white";
 			for(i=0; i<=length; i++){
 			ctx.fillRect(x_array[i]*10, y_array[i]*10, 10, 10);
 		}
-			ctx.fillRect(x_apple*10, y_apple*10,10,10);	
-
+			ctx.fillStyle="red";
+			ctx.fillRect(x_apple*10, y_apple*10,10,10);
 		}
+
 		function doTurn()
 		{
-			switch(state)
+			real_state=state;
+			switch(real_state)
 			{
 				case "left":
 				x--;
@@ -87,13 +94,12 @@
 
 		}
 		}
+		if (x>30 || x<0 || y>30 || y<0){
+			stopGame();
+			}
+
 		drawScreen();
 		doTurn();
-		if (x>29 || x<0 || y>29 || y<0){
-			stopGame();
-
-	}
-
 
 
 	}
@@ -135,30 +141,29 @@
 		switch(evt.keyCode)
 		{
 			case 37:
-			if (!(state=="right")){
+			if (!(state=="right" || real_state=="right")){
 			state = "left";
 			}
 			break;
 			case 38:
-			if (!(state=="down")){
+			if (!(state=="down"|| real_state=="down")){
 			state ="up";
 			}
 			break;
 			case 39:
-			if (!(state=="left")){
+			if (!(state=="left"|| real_state=="left")){
 			state= "right";
 			}
 			break;
 			case 40:
-			if (!(state=="up")){
+			if (!(state=="up"|| real_state=="up")){
 			state= "down";
 			}
 			break;
 		}
 	}
 	$(function() {
-		//ndow.addEventListener('keydown', KeyPressed, true);}
-	
+
 	$(window).keydown(KeyPressed);
 		initCanvas();
 		startGame();
